@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/home_page.dart';
+import 'package:task_api/pages/welcome.dart';
 
 import '../api/auth.dart';
 import '../api/data.dart';
@@ -21,7 +22,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool showSpinner = false;
-  final AuthService _authService = AuthService();
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -120,10 +120,8 @@ class _LoginState extends State<Login> {
         ),
         data: data,
       );
-      setState(() {
-        showSpinner = false;
-      });
-      if (response.statusCode != 200) {
+
+      if (response.statusCode == 200) {
         print(json.encode(response.data));
       } else {
         print(response.statusMessage);
@@ -134,15 +132,6 @@ class _LoginState extends State<Login> {
     setState(() {
       showSpinner = false;
     });
-    bool isAuthenticated = await _authService.authenticate(username, password);
-    if (!isAuthenticated) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Invalid username or password.'),
-      ));
-    }
-    if (isAuthenticated) {
-      Navigator.pushNamed(context, HomePage.id);
-      print('Authentication successful!');
-    }
+    Navigator.pushNamed(context, HomePage.id);
   }
 }

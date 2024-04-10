@@ -102,6 +102,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 myFunc: () {
                   signIn();
+                  Navigator.pushNamed(context, Login.id);
                 },
               ),
             ],
@@ -133,13 +134,6 @@ class _SignUpState extends State<SignUp> {
     String address = addressController.text.trim();
     String image = imageController.text.trim();
 
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please enter username and password.'),
-      ));
-      return;
-    }
-    print(username);
     setState(() {
       showSpinner = true;
     });
@@ -164,10 +158,10 @@ class _SignUpState extends State<SignUp> {
 
     if (response.statusCode == 200) {
       print(json.encode(response.data));
-      Navigator.pushNamed(context, Login.id);
     } else {
       print(response.statusMessage);
     }
+
     setState(() {
       showSpinner = false;
     });
