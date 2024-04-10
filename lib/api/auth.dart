@@ -1,32 +1,41 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class AuthService {
-  static String name = "tunde";
-
   static const String signInUrl = 'https://stacked.com.ng/api/login';
 
   Future<bool> authenticate(String username, String password) async {
     try {
-      // Construct the request body
-      Map<String, dynamic> requestBody = {
-        'username': username,
-        'password': password,
-      };
+      // Create Dio instance
+      Dio dio = Dio();
 
-      final http.Response response = await http.post(
-        Uri.parse(signInUrl),
-        body: json.encode(requestBody),
-        headers: {'Content-Type': 'application/json'},
+      // Make POST request to login endpoint
+      Response response = await dio.post(
+        signInUrl,
+        data: {
+          'username': username,
+          'password': password,
+        },
       );
+
+      // If login is successful, handle the response
       if (response.statusCode == 200) {
+        // Handle successful login
+        print('Login successful!');
+        print(response.data);
+
+        // Return true indicating successful authentication
         return true;
       } else {
+        // Handle other status codes
+        print('Login failed. Status code: ${response.statusCode}');
+        // Return false indicating failed authentication
         return false;
       }
     } catch (e) {
-      // An error occurred during the API call
-      print('Error during authentication: $e');
+      // Handle Dio errors
+      print('Error occurred: $e');
+      // Return false indicating failed authentication
       return false;
     }
   }

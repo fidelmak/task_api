@@ -9,7 +9,6 @@ class HomePage extends StatelessWidget {
   static String id = "homepage";
 
   final AuthService authService = AuthService();
-  final name = AuthService.name;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class HomePage extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            Text(" This is your User Dashboard  ${name.toUpperCase()} ")
+            Text(" This is your User Dashboard   ")
           ],
         ),
       ),
