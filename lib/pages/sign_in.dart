@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/login.dart';
 
@@ -40,53 +41,58 @@ class _SignUpState extends State<SignUp> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-                child: Hero(
-                  tag: 'logo',
-                  child: Container(
-                    height: 100.0,
-                    child: Image.asset('images/img.png'),
-                  ),
+                child: Image.asset(
+                  'assets/images/img.png',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               Center(child: Text("Register as a user")),
-              SizedBox(height: 15),
-              MyTextField(
-                hint: "Username",
-                obscure: false,
-                controller: usernameController,
+              SizedBox(height: 5),
+              Expanded(
+                child: ListView(
+                  children: [
+                    MyTextField(
+                      hint: "Username",
+                      obscure: false,
+                      controller: usernameController,
+                    ),
+                    SizedBox(height: 10),
+                    MyTextField(
+                      controller: passwordController,
+                      hint: "Password",
+                      obscure: true,
+                    ),
+                    SizedBox(height: 10),
+                    MyTextField(
+                      controller: emailController,
+                      hint: "email",
+                      obscure: false,
+                    ),
+                    SizedBox(height: 10),
+                    MyTextField(
+                      controller: phoneController,
+                      hint: "phone number",
+                      obscure: false,
+                    ),
+                    SizedBox(height: 10),
+                    MyTextField(
+                      controller: addressController,
+                      hint: "address",
+                      obscure: false,
+                    ),
+                    SizedBox(height: 10),
+                    MyTextField(
+                      controller: imageController,
+                      hint: "address",
+                      obscure: false,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 15),
-              MyTextField(
-                controller: passwordController,
-                hint: "Password",
-                obscure: true,
-              ),
-              SizedBox(height: 15),
-              MyTextField(
-                controller: emailController,
-                hint: "email",
-                obscure: false,
-              ),
-              SizedBox(height: 15),
-              MyTextField(
-                controller: phoneController,
-                hint: "phone number",
-                obscure: false,
-              ),
-              SizedBox(height: 15),
-              MyTextField(
-                controller: addressController,
-                hint: "address",
-                obscure: false,
-              ),
-              SizedBox(height: 15),
-              MyTextField(
-                controller: imageController,
-                hint: "address",
-                obscure: false,
-              ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               Button(
                 text: Text(
                   "SIGNUP",
@@ -101,7 +107,7 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
       floatingActionButton: SizedBox(
-        height: 40,
+        height: 30,
         child: FloatingActionButton(
           onPressed: () {
             Navigator.maybePop(context);
@@ -123,23 +129,29 @@ class _SignUpState extends State<SignUp> {
     String email = emailController.text.trim();
     String phone = phoneController.text.trim();
     String address = addressController.text.trim();
+    String image = imageController.text.trim();
 
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter username and password.'),
+      ));
+      return;
+    }
     setState(() {
       showSpinner = true;
     });
     try {
-      // Create Dio instance
-      Dio dio = Dio();
-
+      print("sending");
       // Make POST request to sign-up endpoint
-      Response response = await dio.post(
-        'https://stacked.com.ng/api/register',
-        data: {
+      http.Response response = await http.post(
+        Uri.parse('https://stacked.com.ng/api/register'), // Change to HTTPS
+        body: {
           'username': username,
           'password': password,
           'email': email,
           'phone': phone,
           'address': address,
+          'image': image,
         },
       );
 
@@ -147,19 +159,21 @@ class _SignUpState extends State<SignUp> {
       if (response.statusCode == 200) {
         // Handle successful sign-up
         print('Sign-up successful!');
-        print(response.data);
+        print(response.body);
       } else {
         // Handle other status codes
         print('Sign-up failed. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle Dio errors
+      // Handle errors
       print('Error occurred: $e');
     }
 
-    setState(() {
-      showSpinner = false;
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        showSpinner = false;
+        Navigator.pushNamed(context, Login.id);
+      });
     });
-    Navigator.pushNamed(context, Login.id);
   }
 }

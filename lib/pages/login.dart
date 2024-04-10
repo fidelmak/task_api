@@ -36,11 +36,13 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
-                          child: Hero(
-                              tag: 'logo',
-                              child: Container(
-                                  height: 200.0,
-                                  child: Image.asset('images/img.png')))),
+                        child: Image.asset(
+                          'assets/images/img.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       SizedBox(
                         height: 25,
                       ),

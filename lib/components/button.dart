@@ -17,7 +17,7 @@ class Button extends StatelessWidget {
       child: Material(
         color: primaryColor,
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        elevation: 2.0,
+        elevation: 1.0,
         child: MaterialButton(
           onPressed: myFunc,
           minWidth: buttonWidth,
