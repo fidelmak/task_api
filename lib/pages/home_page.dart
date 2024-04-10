@@ -8,8 +8,6 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
   static String id = "homepage";
 
-  final AuthService authService = AuthService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

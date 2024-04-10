@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -137,43 +139,38 @@ class _SignUpState extends State<SignUp> {
       ));
       return;
     }
+    print(username);
     setState(() {
       showSpinner = true;
     });
-    try {
-      print("sending");
-      // Make POST request to sign-up endpoint
-      http.Response response = await http.post(
-        Uri.parse('https://stacked.com.ng/api/register'), // Change to HTTPS
-        body: {
-          'username': username,
-          'password': password,
-          'email': email,
-          'phone': phone,
-          'address': address,
-          'image': image,
-        },
-      );
-
-      // If sign-up is successful, handle the response
-      if (response.statusCode == 200) {
-        // Handle successful sign-up
-        print('Sign-up successful!');
-        print(response.body);
-      } else {
-        // Handle other status codes
-        print('Sign-up failed. Status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Handle errors
-      print('Error occurred: $e');
-    }
-
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        showSpinner = false;
-        Navigator.pushNamed(context, Login.id);
-      });
+    var headers = {'Content-Type': 'application/json'};
+    var data = json.encode({
+      "username": username,
+      "password": password,
+      "email": email,
+      "address": address,
+      "phone": phone,
+      "image": image
     });
+    var dio = Dio();
+    var response = await dio.request(
+      'https://stacked.com.ng/api/register',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      Navigator.pushNamed(context, Login.id);
+    } else {
+      print(response.statusMessage);
+    }
+    setState(() {
+      showSpinner = false;
+    });
+    Navigator.pushNamed(context, Login.id);
   }
 }

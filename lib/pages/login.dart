@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/home_page.dart';
@@ -95,31 +98,51 @@ class _LoginState extends State<Login> {
   Future<void> login() async {
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
-    print(username);
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Please enter username and password.'),
       ));
       return;
     }
-
+    print(username);
     setState(() {
       showSpinner = true;
     });
-
-    bool isAuthenticated = await _authService.authenticate(username, password);
-
+    var headers = {'Content-Type': 'application/json'};
+    var data = json.encode({"username": username, "password": password});
+    var dio = Dio();
+    try {
+      var response = await dio.request(
+        'https://stacked.com.ng/api/login',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
+      setState(() {
+        showSpinner = false;
+      });
+      if (response.statusCode != 200) {
+        print(json.encode(response.data));
+      } else {
+        print(response.statusMessage);
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
     setState(() {
       showSpinner = false;
     });
-
-    if (isAuthenticated) {
-      Navigator.pushNamed(context, HomePage.id);
-      print('Authentication successful!');
-    } else {
+    bool isAuthenticated = await _authService.authenticate(username, password);
+    if (!isAuthenticated) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Invalid username or password.'),
       ));
+    }
+    if (isAuthenticated) {
+      Navigator.pushNamed(context, HomePage.id);
+      print('Authentication successful!');
     }
   }
 }
