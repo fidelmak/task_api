@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/login.dart';
+import 'package:task_api/pages/welcome.dart';
 
 import '../api/data.dart';
 import '../components/button.dart';
@@ -133,38 +134,47 @@ class _SignUpState extends State<SignUp> {
     String phone = phoneController.text.trim();
     String address = addressController.text.trim();
     String image = imageController.text.trim();
-
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter username and password.'),
+      ));
+      return;
+    }
     setState(() {
       showSpinner = true;
     });
-    var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({
-      "username": username,
-      "password": password,
-      "email": email,
-      "address": address,
-      "phone": phone,
-      "image": image
-    });
-    var dio = Dio();
-    var response = await dio.request(
-      'https://stacked.com.ng/api/register',
-      options: Options(
-        method: 'POST',
-        headers: headers,
-      ),
-      data: data,
-    );
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var data = json.encode({
+        "username": username,
+        "password": password,
+      });
+      var dio = Dio();
+      var response = await dio.request(
+        'https://fidelmak.pythonanywhere.com/signup/',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
 
-    if (response.statusCode == 200) {
-      print(json.encode(response.data));
-    } else {
-      print(response.statusMessage);
-    }
-
-    setState(() {
-      showSpinner = false;
-    });
-    Navigator.pushNamed(context, Login.id);
+      if (response.statusCode == 200) {
+        print(json.encode(response.data));
+      } else {
+        setState(() {
+          showSpinner = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Username already  exist'),
+        ));
+        Navigator.pushNamed(context, Welcome.id);
+        print(response.statusMessage);
+      }
+      setState(() {
+        showSpinner = false;
+      });
+      Navigator.pushNamed(context, Login.id);
+    } catch (e) {}
   }
 }

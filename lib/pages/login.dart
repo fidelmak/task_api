@@ -11,9 +11,10 @@ import '../api/data.dart';
 import '../components/button.dart';
 import '../components/text_field.dart';
 import '../const/const.dart';
+import 'sign_in.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({Key? key}) : super(key: key);
   static String id = "login";
 
   @override
@@ -104,16 +105,19 @@ class _LoginState extends State<Login> {
       ));
       return;
     }
-    print(username);
+
     setState(() {
       showSpinner = true;
     });
-    var headers = {'Content-Type': 'application/json'};
-    var data = json.encode({"username": username, "password": password});
-    var dio = Dio();
     try {
+      var headers = {'Content-Type': 'application/json'};
+      var data = json.encode({
+        "username": username,
+        "password": password,
+      });
+      var dio = Dio();
       var response = await dio.request(
-        'https://stacked.com.ng/api/login',
+        'https://fidelmak.pythonanywhere.com/login/',
         options: Options(
           method: 'POST',
           headers: headers,
@@ -122,16 +126,23 @@ class _LoginState extends State<Login> {
       );
 
       if (response.statusCode == 200) {
-        print(json.encode(response.data));
+        print('Status code: ${response.statusCode}');
+        print('Response data: ${json.encode(response.data)}');
       } else {
-        print(response.statusMessage);
+        setState(() {
+          showSpinner = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Username does not  exist'),
+        ));
+        Navigator.pushNamed(context, Welcome.id);
       }
-    } catch (error) {
-      print('Error: $error');
+      setState(() {
+        showSpinner = false;
+      });
+      Navigator.pushNamed(context, HomePage.id);
+    } catch (e) {
+      print(e);
     }
-    setState(() {
-      showSpinner = false;
-    });
-    Navigator.pushNamed(context, HomePage.id);
   }
 }
