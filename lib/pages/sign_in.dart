@@ -7,7 +7,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/login.dart';
 import 'package:task_api/pages/welcome.dart';
 
-import '../api/data.dart';
 import '../components/button.dart';
 import '../components/text_field.dart';
 import '../const/const.dart';
@@ -103,7 +102,6 @@ class _SignUpState extends State<SignUp> {
                 ),
                 myFunc: () {
                   signIn();
-                  Navigator.pushNamed(context, Login.id);
                 },
               ),
             ],
@@ -130,19 +128,27 @@ class _SignUpState extends State<SignUp> {
   Future<void> signIn() async {
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
+
+    // Validate other fields
     String email = emailController.text.trim();
     String phone = phoneController.text.trim();
     String address = addressController.text.trim();
     String image = imageController.text.trim();
+
+    // Validate username and password
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Please enter username and password.'),
       ));
       return;
     }
+
+    // You can add further validation for email, phone, address, etc. here
+
     setState(() {
       showSpinner = true;
     });
+
     try {
       var headers = {'Content-Type': 'application/json'};
       var data = json.encode({
@@ -160,21 +166,32 @@ class _SignUpState extends State<SignUp> {
       );
 
       if (response.statusCode == 200) {
-        print(json.encode(response.data));
+        print('Status code: ${response.statusCode}');
+        print('Response data: ${json.encode(response.data)}');
+        setState(() {
+          showSpinner = false;
+        });
+        Navigator.pushNamed(context, Login.id);
       } else {
+        // if not
+        print('Status code: ${response.statusCode}');
+        print('Response data: ${json.encode(response.data)}');
         setState(() {
           showSpinner = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Username already  exist'),
+          content: Text(' username exist '),
         ));
-        Navigator.pushNamed(context, Welcome.id);
-        print(response.statusMessage);
       }
+    } catch (e) {
       setState(() {
         showSpinner = false;
       });
-      Navigator.pushNamed(context, Login.id);
-    } catch (e) {}
+      // shows snackbar
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('try again.'),
+      ));
+    }
   }
 }

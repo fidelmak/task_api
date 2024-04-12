@@ -4,8 +4,6 @@ import 'package:task_api/pages/welcome.dart';
 import 'package:task_api/pages/login.dart';
 import 'package:task_api/pages/sign_in.dart';
 
-import 'pages/text.dart';
-
 void main() {
   runApp(const MyApp());
 }

@@ -6,8 +6,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:task_api/pages/home_page.dart';
 import 'package:task_api/pages/welcome.dart';
 
-import '../api/auth.dart';
-import '../api/data.dart';
 import '../components/button.dart';
 import '../components/text_field.dart';
 import '../const/const.dart';
@@ -99,6 +97,8 @@ class _LoginState extends State<Login> {
   Future<void> login() async {
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
+
+    // validate
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Please enter username and password.'),
@@ -109,6 +109,7 @@ class _LoginState extends State<Login> {
     setState(() {
       showSpinner = true;
     });
+
     try {
       var headers = {'Content-Type': 'application/json'};
       var data = json.encode({
@@ -125,24 +126,34 @@ class _LoginState extends State<Login> {
         data: data,
       );
 
+      // check if success
       if (response.statusCode == 200) {
         print('Status code: ${response.statusCode}');
         print('Response data: ${json.encode(response.data)}');
+        setState(() {
+          showSpinner = false;
+        });
+        Navigator.pushNamed(context, HomePage.id);
       } else {
+        // if not
+        print('Status code: ${response.statusCode}');
+        print('Response data: ${json.encode(response.data)}');
         setState(() {
           showSpinner = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Username does not  exist'),
+          content: Text('Incorrect username or password.'),
         ));
-        Navigator.pushNamed(context, Welcome.id);
       }
+    } catch (e) {
       setState(() {
         showSpinner = false;
       });
-      Navigator.pushNamed(context, HomePage.id);
-    } catch (e) {
+      // shows snackbar
       print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('user not found Please try again.'),
+      ));
     }
   }
 }
