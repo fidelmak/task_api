@@ -169,21 +169,15 @@ class _SignUpState extends State<SignUp> {
         // if not
         print('Status code: ${response.statusCode}');
         print('Response data: ${json.encode(response.data)}');
-        setState(() {
-          showSpinner = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(' username exist '),
-        ));
       }
     } catch (e) {
       setState(() {
         showSpinner = false;
       });
-      // shows snackbar
+
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('try again.'),
+        content: Text(' username already registered.'),
       ));
     }
   }

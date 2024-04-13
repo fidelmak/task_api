@@ -139,21 +139,14 @@ class _LoginState extends State<Login> {
         // if not
         print('Status code: ${response.statusCode}');
         print('Response data: ${json.encode(response.data)}');
-        setState(() {
-          showSpinner = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Incorrect username or password.'),
-        ));
       }
     } catch (e) {
+      print(e);
       setState(() {
         showSpinner = false;
       });
-      // shows snackbar
-      print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('user not found Please try again.'),
+        content: Text('Incorrect username or password.'),
       ));
     }
   }

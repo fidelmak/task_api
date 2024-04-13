@@ -4,6 +4,7 @@ import 'package:task_api/pages/login.dart';
 
 import '../components/button.dart';
 import '../widgets/price.dart';
+import 'user.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -57,8 +58,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(color: textColor),
               ),
               myFunc: () {
-                Navigator.pushNamed(context, Login.id);
-                PriceList();
+                Navigator.pushNamed(context, User.id);
               },
             ),
           ],

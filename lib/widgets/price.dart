@@ -40,61 +40,63 @@ class _PriceListState extends State<PriceList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        WxListTile(
-          title: const Text('Bitcoin'),
-          subtitle: const Text('price'),
-          leading: Icon(CryptoFontIcons.fromSymbol("BTC")),
-          trailing: Text(
-            ' \$  ${cryptoPrices.containsKey('bitcoin') ? cryptoPrices['bitcoin']['usd'] : 'Loading...'}',
-            style: const TextStyle(fontSize: 30, color: Colors.amber),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          WxListTile(
+            title: const Text('Bitcoin'),
+            subtitle: const Text('price'),
+            leading: Icon(CryptoFontIcons.fromSymbol("BTC")),
+            trailing: Text(
+              ' \$  ${cryptoPrices.containsKey('bitcoin') ? cryptoPrices['bitcoin']['usd'] : 'Loading...'}',
+              style: const TextStyle(fontSize: 30, color: Colors.amber),
+            ),
+            textColor: primaryColor,
+            iconColor: Colors.amber,
+            margin: const EdgeInsets.all(15),
+            onTap: () {},
           ),
-          textColor: primaryColor,
-          iconColor: Colors.amber,
-          margin: const EdgeInsets.all(15),
-          onTap: () {},
-        ),
-        WxListTile(
-          title: const Text('Ethereum'),
-          subtitle: const Text('price'),
-          leading: Icon(CryptoFontIcons.fromSymbol("ETH")),
-          trailing: Text(
-            ' \$  ${cryptoPrices.containsKey('ethereum') ? cryptoPrices['ethereum']['usd'] : 'Loading...'}',
-            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          WxListTile(
+            title: const Text('Ethereum'),
+            subtitle: const Text('price'),
+            leading: Icon(CryptoFontIcons.fromSymbol("ETH")),
+            trailing: Text(
+              ' \$  ${cryptoPrices.containsKey('ethereum') ? cryptoPrices['ethereum']['usd'] : 'Loading...'}',
+              style: const TextStyle(fontSize: 30, color: Colors.amber),
+            ),
+            textColor: primaryColor,
+            iconColor: Colors.amber,
+            margin: const EdgeInsets.all(15),
+            onTap: () {},
           ),
-          textColor: primaryColor,
-          iconColor: Colors.amber,
-          margin: const EdgeInsets.all(15),
-          onTap: () {},
-        ),
-        WxListTile(
-          title: const Text('Solana'),
-          subtitle: const Text('price'),
-          leading: Icon(CryptoFontIcons.fromSymbol("SOL")),
-          trailing: Text(
-            ' \$  ${cryptoPrices.containsKey('solana') ? cryptoPrices['solana']['usd'] : 'Loading...'}',
-            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          WxListTile(
+            title: const Text('Solana'),
+            subtitle: const Text('price'),
+            leading: Icon(CryptoFontIcons.fromSymbol("SOL")),
+            trailing: Text(
+              ' \$  ${cryptoPrices.containsKey('solana') ? cryptoPrices['solana']['usd'] : 'Loading...'}',
+              style: const TextStyle(fontSize: 30, color: Colors.amber),
+            ),
+            textColor: primaryColor,
+            iconColor: Colors.amber,
+            margin: const EdgeInsets.all(15),
+            onTap: () {},
           ),
-          textColor: primaryColor,
-          iconColor: Colors.amber,
-          margin: const EdgeInsets.all(15),
-          onTap: () {},
-        ),
-        WxListTile(
-          title: const Text('Tron'),
-          subtitle: const Text('price'),
-          leading: Icon(CryptoFontIcons.fromSymbol("TRX")),
-          trailing: Text(
-            ' \$  ${cryptoPrices.containsKey('tron') ? cryptoPrices['tron']['usd'] : 'Loading...'}',
-            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          WxListTile(
+            title: const Text('Tron'),
+            subtitle: const Text('price'),
+            leading: Icon(CryptoFontIcons.fromSymbol("TRX")),
+            trailing: Text(
+              ' \$  ${cryptoPrices.containsKey('tron') ? cryptoPrices['tron']['usd'] : 'Loading...'}',
+              style: const TextStyle(fontSize: 30, color: Colors.amber),
+            ),
+            textColor: primaryColor,
+            iconColor: Colors.amber,
+            margin: const EdgeInsets.all(15),
+            onTap: () {},
           ),
-          textColor: primaryColor,
-          iconColor: Colors.amber,
-          margin: const EdgeInsets.all(15),
-          onTap: () {},
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

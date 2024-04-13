@@ -4,6 +4,9 @@ import 'package:task_api/pages/welcome.dart';
 import 'package:task_api/pages/login.dart';
 import 'package:task_api/pages/sign_in.dart';
 
+import 'pages/user.dart';
+import 'widgets/price.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -21,7 +24,8 @@ class MyApp extends StatelessWidget {
         Welcome.id: (context) => const Welcome(),
         Login.id: (context) => const Login(),
         SignUp.id: (context) => SignUp(),
-        HomePage.id: (context) => HomePage()
+        HomePage.id: (context) => HomePage(),
+        User.id: (context) => User(),
       },
     );
   }
