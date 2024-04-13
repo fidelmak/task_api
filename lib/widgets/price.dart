@@ -1,11 +1,11 @@
-import 'dart:async';
-import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:crypto_font_icons/crypto_font_icons.dart';
-import 'package:http/http.dart' as http;
 
-import '../const/const.dart'; // Assuming primaryColor is defined in const.dart
+import 'package:flutter/material.dart';
+import 'package:wx_tile/wx_tile.dart';
+
+import 'package:cryptofont/cryptofont.dart';
+import 'package:http/http.dart' as http;
+import 'package:task_api/const/const.dart';
 
 class PriceList extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class PriceList extends StatefulWidget {
 class _PriceListState extends State<PriceList> {
   Map<String, dynamic> cryptoPrices = {};
 
-  FutureOr<Map<String, dynamic>> fetchCryptoPrices() async {
+  Future<Map<String, dynamic>> fetchCryptoPrices() async {
     final response = await http.get(Uri.parse(
         'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,solana,tron,ethereum&vs_currencies=usd'));
 
@@ -27,39 +27,73 @@ class _PriceListState extends State<PriceList> {
   }
 
   @override
-  FutureOr<void> initState() async {
+  void initState() {
     super.initState();
-    try {
-      final prices = await fetchCryptoPrices();
+    fetchCryptoPrices().then((prices) {
       setState(() {
         cryptoPrices = prices;
       });
-    } catch (error) {
+    }).catchError((error) {
       print('Error fetching prices: $error');
-      // You may want to handle this error more gracefully, like displaying an error message to the user.
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          title: Text('Bitcoin'),
-          subtitle: Text('price'),
-          leading: Icon(CryptoFontIcons.BTC),
+        WxListTile(
+          title: const Text('Bitcoin'),
+          subtitle: const Text('price'),
+          leading: Icon(CryptoFontIcons.fromSymbol("BTC")),
           trailing: Text(
             ' \$  ${cryptoPrices.containsKey('bitcoin') ? cryptoPrices['bitcoin']['usd'] : 'Loading...'}',
-            style:
-                TextStyle(fontSize: 30, color: Colors.amber), // Removed const
+            style: const TextStyle(fontSize: 30, color: Colors.amber),
           ),
-          textColor: primaryColor, // Assuming primaryColor is defined
+          textColor: primaryColor,
           iconColor: Colors.amber,
-          contentPadding:
-              EdgeInsets.all(15), // Changed margin to contentPadding
+          margin: const EdgeInsets.all(15),
           onTap: () {},
         ),
-        // Repeat the same ListTile structure for other cryptocurrencies
+        WxListTile(
+          title: const Text('Ethereum'),
+          subtitle: const Text('price'),
+          leading: Icon(CryptoFontIcons.fromSymbol("ETH")),
+          trailing: Text(
+            ' \$  ${cryptoPrices.containsKey('ethereum') ? cryptoPrices['ethereum']['usd'] : 'Loading...'}',
+            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          ),
+          textColor: primaryColor,
+          iconColor: Colors.amber,
+          margin: const EdgeInsets.all(15),
+          onTap: () {},
+        ),
+        WxListTile(
+          title: const Text('Solana'),
+          subtitle: const Text('price'),
+          leading: Icon(CryptoFontIcons.fromSymbol("SOL")),
+          trailing: Text(
+            ' \$  ${cryptoPrices.containsKey('solana') ? cryptoPrices['solana']['usd'] : 'Loading...'}',
+            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          ),
+          textColor: primaryColor,
+          iconColor: Colors.amber,
+          margin: const EdgeInsets.all(15),
+          onTap: () {},
+        ),
+        WxListTile(
+          title: const Text('Tron'),
+          subtitle: const Text('price'),
+          leading: Icon(CryptoFontIcons.fromSymbol("TRX")),
+          trailing: Text(
+            ' \$  ${cryptoPrices.containsKey('tron') ? cryptoPrices['tron']['usd'] : 'Loading...'}',
+            style: const TextStyle(fontSize: 30, color: Colors.amber),
+          ),
+          textColor: primaryColor,
+          iconColor: Colors.amber,
+          margin: const EdgeInsets.all(15),
+          onTap: () {},
+        ),
       ],
     );
   }

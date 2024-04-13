@@ -1,7 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/colors.dart';
+import '../const/const.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});

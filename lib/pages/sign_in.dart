@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -129,12 +130,6 @@ class _SignUpState extends State<SignUp> {
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
 
-    // Validate other fields
-    String email = emailController.text.trim();
-    String phone = phoneController.text.trim();
-    String address = addressController.text.trim();
-    String image = imageController.text.trim();
-
     // Validate username and password
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -142,8 +137,6 @@ class _SignUpState extends State<SignUp> {
       ));
       return;
     }
-
-    // You can add further validation for email, phone, address, etc. here
 
     setState(() {
       showSpinner = true;

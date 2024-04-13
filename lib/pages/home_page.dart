@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:task_api/const/const.dart';
 import 'package:task_api/pages/login.dart';
 
+import '../components/button.dart';
+import '../widgets/price.dart';
+
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   static String id = "homepage";
@@ -40,7 +43,24 @@ class HomePage extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            Text(" This is your User Dashboard   ")
+            Text(" This is your User Dashboard   "),
+            SizedBox(
+              height: 8,
+            ),
+            Text(" view crypto update   "),
+            SizedBox(
+              height: 10,
+            ),
+            Button(
+              text: Text(
+                "View",
+                style: TextStyle(color: textColor),
+              ),
+              myFunc: () {
+                Navigator.pushNamed(context, Login.id);
+                PriceList();
+              },
+            ),
           ],
         ),
       ),

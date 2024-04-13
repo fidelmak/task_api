@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../utils/colors.dart';
+import '../const/const.dart';
 
 class TimeDisplay extends StatefulWidget {
   final Widget field;
